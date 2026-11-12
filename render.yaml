@@ -11,6 +11,8 @@ services:
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
     healthCheckPath: /actuator/health/readiness
+    # Redeploy on every push to main.
+    autoDeployTrigger: commit
     envVars:
       - key: DATABASE_HOST
         fromDatabase: { name: ett-db, property: host }
