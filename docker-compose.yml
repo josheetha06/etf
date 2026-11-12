@@ -1,0 +1,66 @@
+# Runs the complete portal: PostgreSQL, the API, the web app and a local mail catcher.
+#   cp .env.example .env   (then fill in the values)
+#   docker compose up -d --build
+# Web app: http://localhost:8081   Test inbox: http://localhost:8025
+
+name: ett-hr-portal
+
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ett
+      POSTGRES_USER: ett
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
+    volumes:
+      # PostgreSQL 18+ images keep their data under /var/lib/postgresql/<version>/docker.
+      # The volume name carries the major version: PostgreSQL 18 refuses to start on data left by an older
+      # version (for example a trial of an earlier build), so a new version always starts with its own volume.
+      - pg18-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ett -d ett"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # Catches outgoing email for local and demo use. In production, point SMTP_* at your mail provider.
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "${MAIL_UI_PORT:-8025}:8025"
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/ett
+      DATABASE_USER: ett
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - cv-files:/var/lib/ett/files
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      # Run with bash, not sh: the /dev/tcp connection below is a bash feature, so no curl is needed.
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8080 && printf 'GET /actuator/health/readiness HTTP/1.0\\r\\n\\r\\n' >&3 && grep -q UP <&3"]
+      interval: 10s
+      timeout: 5s
+      start_period: 60s
+      retries: 10
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-8081}:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  pg18-data:
+  cv-files:

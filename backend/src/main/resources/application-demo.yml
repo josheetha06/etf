@@ -1,0 +1,5 @@
+# Sample data only: panel interview codes keep working for 14 days after the sample loads, so they can be tried
+# out at any time. Real installations keep the 48-hour window.
+ett:
+  panel:
+    review-window-hours: 336

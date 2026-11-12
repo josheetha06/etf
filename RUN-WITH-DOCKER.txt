@@ -1,0 +1,178 @@
+ETT HIRING PORTAL - RUN WITH DOCKER
+===================================
+
+You need Docker Desktop (Windows or Mac) or Docker Engine with Compose (Linux).
+
+
+0. GET THE CODE (once)
+----------------------
+Either unzip the package you were sent, or download it from GitHub
+(needs Git):
+
+    git clone https://github.com/epictaasforce/epictalenttrust.git
+    cd epictalenttrust
+
+
+1. CREATE YOUR SETTINGS FILE (once)
+-----------------------------------
+Your settings and passwords live in a file called .env. It is never stored
+on GitHub or in the zip, so that passwords don't leak. The file .env.example
+is the template to copy.
+
+Open a terminal in this folder (the one with docker-compose.yml) and run:
+
+    Windows (PowerShell):   copy .env.example .env
+    Mac or Linux:           cp .env.example .env
+
+Open .env in a text editor (Notepad is fine) and change DATABASE_PASSWORD
+to a long password of your own. Everything else can stay as it is for a
+trial.
+
+If you skip this step, Docker stops with "Set DATABASE_PASSWORD in .env".
+
+
+2. START
+--------
+    docker compose up -d --build
+
+The first start downloads and builds everything, which takes 5 to 15
+minutes. Later starts take under a minute.
+
+
+3. OPEN THE PORTAL
+------------------
+    Portal:                 http://localhost:8081
+    Test inbox (emails):    http://localhost:8025
+
+Sign in with:
+    Email:     charlotte.hughes@pellhamrowe.example
+    Password:  Welcome@2026!
+
+On first sign-in, scan the QR code with an authenticator app (Google
+Authenticator, Microsoft Authenticator, 1Password and similar), then enter
+the 6-digit code it shows.
+
+Other sample users (same password):
+    james.whitaker@pellhamrowe.example      HR admin
+    oliver.grant@pellhamrowe.example        Recruiter (covering for Emma)
+    emma.lawson@pellhamrowe.example         Recruiter (on leave this week)
+    thomas.reid@pellhamrowe.example         Recruiter (no jobs yet)
+    daniel.fletcher@pellhamrowe.example     Hiring manager
+    sarah.mitchell@pellhamrowe.example      Hiring manager
+    panel@pellhamrowe.example               Shared panel login (see below)
+
+Each HR person sets up their own authenticator app on first sign-in.
+The panel login has no authenticator step.
+
+To create logins for real people: sign in as an HR admin, open Settings,
+then "Team and logins", then "Add people". You can add several people at
+once; each gets a one-time password (shown once, with Copy and Download
+buttons) and chooses their own password the first time they sign in.
+
+The sample data has a client (Pellham & Rowe) with its logo, 14 partner
+centres (three in Madurai) and six jobs: open, on hold, closed and draft.
+Each open job has its own interview rounds, for example the Data Analyst
+job has an AI interview, then a partner assessment, then an HR round, and
+the Java Developer job has AI shortlisting turned off. There is a
+candidate at every step. Interview reports are samples and are labelled
+SAMPLE.
+
+Things to try:
+
+  Panel review (you are "Demo Panel Member")
+    1. Sign in as panel@pellhamrowe.example (password Welcome@2026!).
+       There is no authenticator step for the panel login.
+    2. Enter employee ID EMP-1001 and one of these interview codes:
+
+         NEHA-4825   Neha Kulkarni, Technical Level 1: your review to do
+         MHMD-6372   Mohammed Irfan, Technical Level 1: your review to do
+         FARH-5938   Farhan Ali, Technical Level 2: your review already
+                     sent (you can still change it)
+         SNEH-2749   Sneha Iyer, tomorrow: the code opens an hour before
+                     the interview starts
+
+    3. Score each skill and measure, add notes and a recommendation, and
+       send the review. "Enter a different code" switches interview.
+    4. Sign back in as Charlotte to see the panel report on the
+       candidate's page.
+    In the sample data these codes keep working for 14 days after the
+    sample loads. "docker compose down -v" reloads it with fresh dates.
+
+  Locations and the nearest partner assessment centres
+    Open Candidates: the Location column shows where each candidate is
+    and where that came from (CV, AI interview or HR). Revathi Murugan's
+    CV had no location, so the AI interviewer asked; open her and book
+    her partner assessment centre round: only the three Madurai centres
+    are offered. Aditya Kumar's location is still "To ask in AI
+    interview". "Change" next to a location takes a town or PIN code.
+
+  The candidate's own page
+    Open the test inbox at http://localhost:8025. Every email to a
+    candidate has a link to their page, where they can accept the time,
+    ask for a new time with the days they're free, or message HR.
+
+  Round robin between the Madurai centres
+    Search for "Meenakshi" (Madurai) or "Arun" (Virudhunagar) and book
+    their partner assessment centre round. The three Madurai centres take
+    turns: ELCOT IT Park, then K K Nagar, then Anna Nagar. "Show nearest
+    cities" lists other cities for exceptions; booking one asks for a
+    reason.
+
+  Leave cover
+    Sign in as Oliver Grant: he sees Emma Lawson's Java Developer job
+    while she is on leave. Choose "Going on leave" in the name menu (top
+    right) to set up cover yourself.
+
+Every email the portal sends (invitations, interview codes for panel
+members, the assessor's report link and so on) appears in the
+test inbox at http://localhost:8025.
+
+
+4. STOP, RESTART, START AGAIN
+-----------------------------
+    Stop:                   docker compose down
+    Start again:            docker compose up -d
+    See what went wrong:    docker compose logs backend --tail 50
+    Wipe all data and
+    reload the sample:      docker compose down -v
+                            docker compose up -d
+
+
+GETTING THE LATEST VERSION
+--------------------------
+If you downloaded from GitHub, get the latest changes and rebuild. Your .env
+and your data are kept:
+        git pull
+        docker compose up -d --build
+
+If you tried a much earlier version of the portal on this computer, wipe the
+old sample data once so the new sample loads:
+        docker compose down -v
+        docker compose up -d --build
+
+
+IF SOMETHING DOESN'T START
+--------------------------
+"container ett-hr-portal-db-1 is unhealthy":
+    The database didn't start. Usually this is data left by an older trial
+    of the portal. Remove the old data and start again (this deletes the
+    sample data, which is loaded again):
+        docker compose down -v
+        docker compose up -d --build
+    To see the reason:  docker compose logs db --tail 30
+
+"port is already allocated":
+    Something else on this computer uses port 8081 or 8025. In .env, set
+    HTTP_PORT=8082 (or MAIL_UI_PORT=8026) and start again.
+
+
+5. YOUR OWN CLIENT INSTEAD OF THE SAMPLE
+----------------------------------------
+In .env, leave SPRING_PROFILES_ACTIVE empty and fill in ETT_FIRST_COMPANY,
+ETT_FIRST_ADMIN_NAME, ETT_FIRST_ADMIN_EMAIL and ETT_FIRST_ADMIN_PASSWORD.
+Run "docker compose down -v" and "docker compose up -d". Then sign in as
+that admin, upload the client's logo under Settings, and remove the password
+from .env.
+
+For a live installation also set ETT_SAMPLE_REPORTS=false. README.md has the
+full production checklist (HTTPS, your mail provider, backups).

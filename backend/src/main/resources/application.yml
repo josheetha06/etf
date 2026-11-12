@@ -1,0 +1,134 @@
+spring:
+  application:
+    name: ett-hr-portal
+  # Platform threads, not virtual threads: with virtual threads, a burst of background work at start-up
+  # (for example many emails rendered at once) could pin every carrier thread while classes and templates
+  # are read from the packaged jar, and the server would stop responding.
+  threads:
+    virtual:
+      enabled: false
+  task:
+    execution:
+      thread-name-prefix: ett-task-
+      pool:
+        core-size: 4
+        max-size: 16
+        queue-capacity: 1000
+    scheduling:
+      thread-name-prefix: ett-job-
+      pool:
+        size: 4
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/ett}
+    username: ${DATABASE_USER:ett}
+    password: ${DATABASE_PASSWORD:ett}
+    hikari:
+      maximum-pool-size: ${DATABASE_POOL_SIZE:15}
+      data-source-properties:
+        # Lets PostgreSQL cast string parameters to the schema's enum and array types.
+        stringtype: unspecified
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  web:
+    resources:
+      # Static files are only served in the portable edition, by WebAppConfig.
+      add-mappings: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 60MB
+  mail:
+    host: ${SMTP_HOST:}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${SMTP_AUTH:true}
+      mail.smtp.starttls.enable: ${SMTP_STARTTLS:true}
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+  error:
+    include-message: never
+    include-stacktrace: never
+  servlet:
+    session:
+      timeout: 8h
+      cookie:
+        name: ETT_SESSION
+        http-only: true
+        same-site: lax
+        secure: ${COOKIE_SECURE:true}
+
+management:
+  health:
+    mail:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  api-docs:
+    path: /api/docs
+    enabled: ${API_DOCS_ENABLED:false}
+  swagger-ui:
+    path: /api/docs/ui
+    enabled: ${API_DOCS_ENABLED:false}
+
+ett:
+  portal-url: ${PORTAL_URL:http://localhost:5173}
+  security:
+    # 32 random bytes, base64. Used to encrypt authenticator secrets at rest.
+    encryption-key: ${ETT_ENCRYPTION_KEY:}
+    totp-issuer: ETT HR portal
+    max-failed-sign-ins: 5
+    lockout-minutes: 15
+  storage:
+    local-dir: ${ETT_STORAGE_DIR:./data/files}
+  mail:
+    from: ${ETT_MAIL_FROM:ETT Talent Team <no-reply@epictalenttrust.example>}
+    # Email colours (hex). Keep them in line with frontend/src/brand.ts.
+    brand-color: "${ETT_BRAND_COLOR:#0a7476}"
+    heading-color: "${ETT_BRAND_HEADING_COLOR:#0b2545}"
+  retention:
+    cv-days: ${ETT_CV_RETENTION_DAYS:180}
+  scheduling:
+    jobs-enabled: ${ETT_JOBS_ENABLED:true}
+  # Sample reports stand in for the AI interviewer, partner assessors and hiring panels until they are connected.
+  # Every sample is labelled SAMPLE in the portal. Set ETT_SAMPLE_REPORTS=false in a live installation.
+  panel:
+    # How long after a panel interview its code still opens the review form (HR's decision closes it sooner).
+    review-window-hours: ${ETT_PANEL_REVIEW_WINDOW_HOURS:48}
+  sample-reports:
+    enabled: ${ETT_SAMPLE_REPORTS:true}
+    # Minutes after an interview ends before a sample report is filled in automatically (0 = only by hand).
+    auto-complete-minutes: ${ETT_SAMPLE_REPORT_DELAY_MINUTES:5}
+  # Fresh installations only: creates the first client company and admin when no HR users exist yet.
+  first-admin:
+    company: ${ETT_FIRST_COMPANY:}
+    country: ${ETT_FIRST_COMPANY_COUNTRY:India}
+    data-region: ${ETT_FIRST_COMPANY_REGION:apac}
+    name: ${ETT_FIRST_ADMIN_NAME:}
+    email: ${ETT_FIRST_ADMIN_EMAIL:}
+    password: ${ETT_FIRST_ADMIN_PASSWORD:}
+
+logging:
+  level:
+    org.apache.tika: warn
+    org.apache.pdfbox: error
+    org.apache.fontbox: error

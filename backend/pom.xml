@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.2</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.epictalenttrust</groupId>
+    <artifactId>ett-hr-portal</artifactId>
+    <version>1.0.0</version>
+    <name>ETT HR Portal</name>
+    <description>Epic Talent Trust HR portal: jobs, AI-assisted CV shortlisting, Round 1 scheduling and decisions.</description>
+    <inceptionYear>2026</inceptionYear>
+    <organization>
+        <name>Epic Talent Trust</name>
+    </organization>
+
+    <properties>
+        <java.version>25</java.version>
+        <tika.version>4.2.0</tika.version>
+        <springdoc.version>3.2.0</springdoc.version>
+        <embedded-postgres.version>2.2.2</embedded-postgres.version>
+        <launch4j-plugin.version>2.7.0</launch4j-plugin.version>
+    </properties>
+
+    <dependencies>
+        <!-- Web, persistence, security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-flyway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- CV text extraction (PDF and Word only) -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>${tika.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parser-pdf-module</artifactId>
+            <version>${tika.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parser-microsoft-module</artifactId>
+            <version>${tika.version}</version>
+        </dependency>
+
+        <!-- API documentation at /swagger-ui.html -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!--
+            Portable edition: one jar with the web app inside and its own PostgreSQL, for running the portal
+            on a single computer. Build with packaging/build-portable.sh, which also adds the launchers.
+        -->
+        <profile>
+            <id>portable</id>
+            <properties>
+                <start-class>com.epictalenttrust.hr.portable.PortableLauncher</start-class>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>io.zonky.test</groupId>
+                    <artifactId>embedded-postgres</artifactId>
+                    <version>${embedded-postgres.version}</version>
+                    <exclusions>
+                        <!-- Each package ships only the database build for its own operating system. -->
+                        <exclusion>
+                            <groupId>io.zonky.test.postgres</groupId>
+                            <artifactId>*</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+            </dependencies>
+            <build>
+                <finalName>ett-hr-portal</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>portable-sources</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>add-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>src/portable/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>web-app</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/../frontend/dist</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                        <artifactId>launch4j-maven-plugin</artifactId>
+                        <version>${launch4j-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>windows-launcher</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>launch4j</goal>
+                                </goals>
+                                <configuration>
+                                    <headerType>console</headerType>
+                                    <outfile>${project.build.directory}/ETT HR Portal.exe</outfile>
+                                    <jar>ett-hr-portal.jar</jar>
+                                    <dontWrapJar>true</dontWrapJar>
+                                    <chdir>.</chdir>
+                                    <errTitle>ETT HR portal</errTitle>
+                                    <downloadUrl>https://adoptium.net/temurin/releases/?version=25</downloadUrl>
+                                    <icon>${project.basedir}/../packaging/icons/ett.ico</icon>
+                                    <singleInstance>
+                                        <mutexName>ETT-HR-Portal</mutexName>
+                                    </singleInstance>
+                                    <jre>
+                                        <path>%JAVA_HOME%;%PATH%</path>
+                                        <requiresJdk>false</requiresJdk>
+                                        <requires64Bit>true</requires64Bit>
+                                        <minVersion>25</minVersion>
+                                    </jre>
+                                    <versionInfo>
+                                        <fileVersion>${project.version}.0</fileVersion>
+                                        <txtFileVersion>${project.version}</txtFileVersion>
+                                        <fileDescription>ETT HR portal</fileDescription>
+                                        <copyright>Copyright (c) 2026 Epic Talent Trust</copyright>
+                                        <productVersion>${project.version}.0</productVersion>
+                                        <txtProductVersion>${project.version}</txtProductVersion>
+                                        <productName>ETT HR portal</productName>
+                                        <companyName>Epic Talent Trust</companyName>
+                                        <internalName>ett-hr-portal</internalName>
+                                        <originalFilename>ETT HR Portal.exe</originalFilename>
+                                    </versionInfo>
+                                    <messages>
+                                        <jreNotFoundErr>ETT HR portal needs Java 25 or later. Install it from the page that opens, then start the portal again.</jreNotFoundErr>
+                                        <jreVersionErr>ETT HR portal needs Java 25 or later. Install it from the page that opens, then start the portal again.</jreVersionErr>
+                                        <instanceAlreadyExistsMsg>The ETT HR portal is already running.</instanceAlreadyExistsMsg>
+                                    </messages>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

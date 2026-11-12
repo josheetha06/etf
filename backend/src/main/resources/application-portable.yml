@@ -1,0 +1,15 @@
+# Portable edition: one person's computer, its own PostgreSQL, started by PortableLauncher.
+# The launcher sets the database, port, storage folder, log file and encryption key.
+server:
+  address: 127.0.0.1
+
+spring:
+  main:
+    banner-mode: off
+
+# The console window shows the launcher's status lines and any problems only.
+# The full log goes to data/logs/ett-hr-portal.log for support.
+logging:
+  threshold:
+    console: warn
+    file: info

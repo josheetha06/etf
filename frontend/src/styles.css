@@ -1,0 +1,287 @@
+body {
+  background: var(--brand-surface);
+  color: var(--brand-text);
+  font-feature-settings: 'cv05' 1;
+}
+
+.page-title {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 600;
+  color: var(--brand-heading);
+  letter-spacing: -0.01em;
+}
+
+.section-title {
+  color: var(--brand-heading);
+  font-weight: 600;
+}
+
+.app-header {
+  box-shadow: 0 1px 0 rgba(11, 37, 69, 0.04);
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:focus-visible {
+  outline: 2px solid var(--mantine-color-ett-5);
+  outline-offset: -2px;
+}
+
+.quote {
+  border-left: 3px solid var(--mantine-color-ett-3);
+  padding-left: 10px;
+  color: var(--brand-text);
+  font-size: var(--mantine-font-size-sm);
+}
+
+.quote-warning {
+  border-left-color: var(--mantine-color-orange-4);
+}
+
+.search-item {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.search-item:hover {
+  background: var(--mantine-color-gray-0);
+}
+
+.notification-item {
+  display: block;
+  width: 100%;
+  border-bottom: 1px solid var(--mantine-color-gray-1);
+}
+
+.notification-item:hover {
+  background: var(--mantine-color-gray-0);
+}
+
+.notification-item[data-unread] {
+  background: var(--mantine-color-ett-0);
+}
+
+.next-step {
+  border-left: 4px solid var(--mantine-color-ett-6);
+  background: linear-gradient(90deg, var(--mantine-color-ett-0) 0%, #fff 55%);
+}
+
+.next-step[data-tone='orange'] {
+  border-left-color: var(--mantine-color-orange-6);
+  background: linear-gradient(90deg, var(--mantine-color-orange-0) 0%, #fff 55%);
+}
+
+.next-step[data-tone='red'] {
+  border-left-color: var(--mantine-color-red-6);
+  background: linear-gradient(90deg, var(--mantine-color-red-0) 0%, #fff 55%);
+}
+
+.next-step[data-tone='gray'] {
+  border-left-color: var(--mantine-color-gray-4);
+  background: #fff;
+}
+
+.stat-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-muted);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.pipeline-col {
+  background: var(--mantine-color-gray-0);
+  border-radius: 10px;
+  min-width: 220px;
+}
+
+.slot-button[data-selected] {
+  border-color: var(--mantine-color-ett-6);
+  background: var(--mantine-color-ett-0);
+}
+
+/* Dashboard */
+.summary-stat {
+  display: block;
+  border-right: 1px solid var(--mantine-color-gray-2);
+  transition: background 120ms ease;
+}
+
+.summary-stat:last-child {
+  border-right: 0;
+}
+
+.summary-stat:hover {
+  background: var(--mantine-color-gray-0);
+}
+
+@media (max-width: 48em) {
+  .summary-stat:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .summary-stat:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--mantine-color-gray-2);
+  }
+}
+
+.todo-row {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+  transition: background 120ms ease;
+}
+
+.todo-row:hover {
+  background: var(--mantine-color-gray-0);
+}
+
+/* Rounds builder */
+.round-number {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  background: var(--mantine-color-navy-9, #0b2545);
+  color: #fff;
+}
+
+.round-card {
+  border-left-width: 4px;
+}
+
+.round-card[data-kind='AI_INTERVIEW'] {
+  border-left-color: var(--mantine-color-violet-5);
+}
+
+.round-card[data-kind='PARTNER'] {
+  border-left-color: var(--mantine-color-teal-5);
+}
+
+.round-card[data-kind='PANEL'] {
+  border-left-color: var(--mantine-color-blue-5);
+}
+
+/* Panel review */
+.score-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  border: 1px solid var(--mantine-color-gray-3);
+  background: #fff;
+  color: var(--brand-text);
+  transition: background 100ms ease, border-color 100ms ease;
+}
+
+.score-button:hover:not(:disabled) {
+  border-color: var(--mantine-color-ett-5);
+}
+
+.score-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.score-button[data-selected] {
+  color: #fff;
+  border-color: transparent;
+}
+
+.score-button[data-selected][data-level='1'] { background: var(--mantine-color-red-6); }
+.score-button[data-selected][data-level='2'] { background: var(--mantine-color-orange-6); }
+.score-button[data-selected][data-level='3'] { background: var(--mantine-color-yellow-7); }
+.score-button[data-selected][data-level='4'] { background: var(--mantine-color-ett-6); }
+.score-button[data-selected][data-level='5'] { background: var(--mantine-color-green-7); }
+
+.panel-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  border-top: 1px solid var(--mantine-color-gray-2);
+  border-radius: 0;
+}
+
+/* Candidate page messages */
+.chat-bubble {
+  max-width: 88%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--mantine-color-gray-0);
+  border: 1px solid var(--mantine-color-gray-2);
+  align-self: flex-start;
+}
+
+.chat-bubble[data-mine] {
+  align-self: flex-end;
+  background: var(--mantine-color-ett-0);
+  border-color: var(--mantine-color-ett-2);
+}
+
+/* Settings navigation */
+.settings-nav {
+  flex-shrink: 0;
+  align-self: flex-start;
+  position: sticky;
+  top: 84px;
+}
+
+.settings-nav::before {
+  display: none;
+}
+
+.offline-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 6px 12px;
+  background: var(--mantine-color-orange-6);
+  color: #fff;
+}
+
+.chat-bubble {
+  overflow-wrap: anywhere;
+}
+
+/* Join button on today's interviews: a soft pulse once it's time. */
+.join-live {
+  animation: join-pulse 2s ease-in-out infinite;
+}
+@keyframes join-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(10, 116, 118, 0.35); }
+  50% { box-shadow: 0 0 0 6px rgba(10, 116, 118, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .join-live { animation: none; }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 62em) {
+  .cv-bulk-card { grid-column: auto !important; }
+}

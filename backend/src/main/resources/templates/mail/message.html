@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${subject}">Message</title>
+</head>
+<body style="margin:0;padding:0;background:#F4F6F9;font-family:Arial,Helvetica,sans-serif;color:#24354B;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F4F6F9;padding:24px 12px;">
+    <tr>
+        <td align="center">
+            <table role="presentation" width="600" cellpadding="0" cellspacing="0"
+                   style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid #D3DAE3;border-radius:12px;">
+                <tr>
+                    <td style="padding:20px 28px;border-bottom:4px solid #0A7476;"
+                        th:style="|padding:20px 28px;border-bottom:4px solid ${brandColor};|">
+                        <span style="font-size:18px;font-weight:bold;color:#0B2545;"
+                              th:style="|font-size:18px;font-weight:bold;color:${headingColor};|">Epic Talent Trust</span>
+                        <span style="font-size:13px;color:#4A586C;">&nbsp;·&nbsp;Verified Talent. Trusted Interviews.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:24px 28px;font-size:15px;line-height:1.55;">
+                        <p th:each="paragraph : ${paragraphs}" th:utext="${#strings.replace(#strings.escapeXml(paragraph), '&#10;', '<br>')}"
+                           style="margin:0 0 14px 0;">Paragraph</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:16px 28px;font-size:12px;color:#5C6A7F;border-top:1px solid #E6EAF0;">
+                        You are receiving this because you applied for a role through Epic Talent Trust.
+                        Reply to this email if anything is wrong or you need adjustments for your interview.
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

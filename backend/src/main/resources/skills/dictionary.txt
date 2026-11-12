@@ -1,0 +1,157 @@
+# Built-in skills dictionary. One skill per line: Display name|other name|other name ... > also counts|also counts
+# Other names work both ways. Items after ">" only count as evidence of the skill (EC2 shows AWS, not the reverse).
+# Matching ignores case and word forms (automate, automated, automation), so list only real alternatives.
+# Clients can add their own in Settings.
+
+# Testing and quality
+QA|quality assurance|software testing|quality analyst|quality engineering|test engineer > test cases|test plans|test automation|regression testing|selenium
+Automation testing|test automation|automated testing|automation tests|automated tests > selenium|playwright|cypress|appium|testng|provar|tosca|webdriver
+Manual testing|manual tests|functional testing
+Selenium|selenium webdriver|webdriver
+Playwright
+Cypress
+Appium
+TestNG
+JUnit
+Cucumber|bdd|gherkin
+JMeter|apache jmeter|load testing|performance testing
+Postman|api testing
+Provar
+Tosca|tricentis tosca
+Copado
+Regression testing|regression suite
+UAT|user acceptance testing
+
+# Salesforce and CRM
+Salesforce|sfdc|salesforce.com|force.com|sales cloud|service cloud|salesforce crm > apex|visualforce|lightning web components|lwc|soql|marketing cloud
+Salesforce Administrator|salesforce admin|sfdc admin
+Apex|apex triggers|apex classes
+Lightning Web Components|lwc|lightning components
+Visualforce
+SOQL
+Marketing Cloud|salesforce marketing cloud|exacttarget
+Dynamics 365|microsoft dynamics|dynamics crm|d365
+HubSpot
+Zoho|zoho crm
+
+# Cloud and DevOps
+AWS|amazon web services|aws cloud > ec2|s3|lambda|cloudformation|rds|dynamodb|eks|ecs|cloudfront|route 53|vpc|elastic beanstalk|cloudwatch
+Azure|microsoft azure|azure cloud > azure devops|aks|azure functions|azure data factory|blob storage|cosmos db
+GCP|google cloud|google cloud platform > bigquery|gke|cloud run|cloud functions
+Kubernetes|k8s|eks|aks|gke
+Docker|containers|containerisation|containerization
+Terraform|hashicorp terraform
+Ansible
+Jenkins
+CI/CD|cicd|ci cd|continuous integration|continuous delivery|continuous deployment > jenkins|github actions|gitlab ci|circleci|bamboo|azure pipelines
+GitHub Actions
+GitLab|gitlab ci
+Git|github|bitbucket|version control
+Linux|unix|rhel|ubuntu|centos
+Shell scripting|bash|shell script
+CloudWatch|amazon cloudwatch
+Prometheus
+Grafana
+DevOps
+SRE|site reliability engineering
+
+# Programming languages
+Java|core java|j2ee|jee
+JavaScript|js|ecmascript
+TypeScript
+Python
+C#|c sharp|csharp
+.NET|dotnet|asp.net|.net core
+C++|cpp
+Go|golang
+Kotlin
+Swift
+PHP
+Ruby|ruby on rails|rails
+Scala
+SQL|structured query language > mysql|postgresql|oracle database|sql server|pl/sql|t-sql
+PL/SQL|plsql
+Node.js|nodejs|node js
+Spring|spring boot|spring framework|springboot
+Hibernate|jpa
+Microservices|micro services|microservice architecture
+REST|rest api|restful|rest apis|web services
+GraphQL
+Kafka|apache kafka
+RabbitMQ
+
+# Front end
+React|react.js|reactjs
+Angular|angularjs|angular.js
+Vue|vue.js|vuejs
+HTML|html5
+CSS|css3|sass|scss
+Next.js|nextjs
+Redux
+Tailwind|tailwind css
+Figma
+UI/UX|ui design|ux design|user experience|user interface design
+
+# Mobile
+Android|android development
+iOS|ios development
+Flutter
+React Native
+
+# Data and analytics
+Power BI|powerbi|power-bi
+Tableau
+Excel|ms excel|microsoft excel|advanced excel
+Data analysis|data analytics|analytics
+Data engineering|data engineer|etl|elt
+Databricks
+Snowflake
+Spark|apache spark|pyspark
+Hadoop|hdfs|hive
+Airflow|apache airflow
+Machine learning|ml|machine-learning
+Deep learning|neural networks
+NLP|natural language processing
+Pandas
+TensorFlow
+PyTorch
+Statistics|statistical analysis
+PostgreSQL|postgres|psql
+MySQL
+Oracle|oracle database|oracle db
+SQL Server|mssql|ms sql|microsoft sql server
+MongoDB|mongo
+Redis
+Elasticsearch|elastic search|elk
+
+# Enterprise systems
+SAP|sap erp
+SAP FICO|sap fi co|sap fi/co|sap finance
+SAP MM|sap materials management
+SAP SD|sap sales and distribution
+SAP ABAP|abap
+SAP HANA|hana|s/4hana|s4hana
+ServiceNow
+Workday
+Oracle EBS|oracle e-business suite|oracle apps
+Tally|tally erp|tally prime
+GST|goods and services tax
+Payroll
+
+# Ways of working and roles
+Agile|scrum|kanban
+JIRA|atlassian jira
+Confluence
+Project management|project manager|pmp
+Business analysis|business analyst
+Stakeholder management
+Team leadership|team lead|team leader|people management
+Customer service|customer support|client support
+Communication|communication skills
+Recruitment|recruiting|talent acquisition|hiring
+Sales|business development
+Digital marketing|seo|sem|performance marketing
+Accounting|bookkeeping
+Cyber security|cybersecurity|information security|infosec
+Networking|ccna|tcp/ip
+ITIL|it service management|itsm

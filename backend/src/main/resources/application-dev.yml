@@ -1,0 +1,22 @@
+# Local development. Never use these values in production.
+server:
+  servlet:
+    session:
+      cookie:
+        secure: false
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+ett:
+  security:
+    encryption-key: ${ETT_ENCRYPTION_KEY:ZGV2LW9ubHkta2V5LWRvLW5vdC11c2UtaW4tcHJvZCE=}
+  storage:
+    local-dir: ${ETT_STORAGE_DIR:./data/files}
+
+logging:
+  level:
+    com.epictalenttrust: debug
