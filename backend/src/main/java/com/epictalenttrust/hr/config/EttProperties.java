@@ -11,7 +11,8 @@ public record EttProperties(
         Retention retention,
         Scheduling scheduling) {
 
-    public record Security(String encryptionKey, String totpIssuer, int maxFailedSignIns, int lockoutMinutes) {
+    public record Security(String encryptionKey, String totpIssuer, int maxFailedSignIns, int lockoutMinutes,
+                           boolean twoStepEnabled) {
     }
 
     public record Storage(String localDir) {

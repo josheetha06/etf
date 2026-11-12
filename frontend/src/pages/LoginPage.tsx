@@ -54,8 +54,9 @@ export function LoginPage() {
     login.mutate(values, {
       onSuccess: async (result) => {
         if (result.nextStep === 'done') {
+          // The panel login lands on /panel: RequireAuth sends it there from any other page.
           await client.invalidateQueries({ queryKey: ['me'] });
-          navigate('/panel', { replace: true });
+          navigate((location.state as { from?: string } | null)?.from ?? '/', { replace: true });
         } else {
           setStep(result);
         }

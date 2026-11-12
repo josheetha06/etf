@@ -33,6 +33,9 @@ services:
         value: https://etf-one-henna.vercel.app
       - key: SPRING_PROFILES_ACTIVE
         value: demo
+      # Demo only: HR sign-in without authenticator codes. Remove for real use.
+      - key: ETT_TWO_STEP_ENABLED
+        value: "false"
       - key: ETT_SAMPLE_REPORTS
         value: "true"
       # The free plan has 512 MB of memory.

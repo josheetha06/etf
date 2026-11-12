@@ -85,7 +85,8 @@ public class AuthService {
         }
         ensureAllowed(user, request);
 
-        if (user.getRole() == com.epictalenttrust.hr.hruser.HrUserRole.PANEL) {
+        // With two-step verification turned off (demo or trial only), HR logins are signed in straight away too.
+        if (user.getRole() == com.epictalenttrust.hr.hruser.HrUserRole.PANEL || !properties.security().twoStepEnabled()) {
             request.getSession(true);
             signIn(user, request, response);
             return new PasswordStepResult("done", null, null);

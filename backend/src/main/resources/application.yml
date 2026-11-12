@@ -97,6 +97,8 @@ ett:
     # 32 random bytes, base64. Used to encrypt authenticator secrets at rest.
     encryption-key: ${ETT_ENCRYPTION_KEY:}
     totp-issuer: ETT HR portal
+    # Authenticator codes for HR sign-in. Only turn off for a demo or trial.
+    two-step-enabled: ${ETT_TWO_STEP_ENABLED:true}
     max-failed-sign-ins: 5
     lockout-minutes: 15
   storage:

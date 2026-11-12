@@ -17,7 +17,7 @@ class SecretCipherTest {
     }
 
     private static EttProperties withKey(String key, Path storage) {
-        return new EttProperties("http://localhost", new EttProperties.Security(key, "ETT", 5, 15),
+        return new EttProperties("http://localhost", new EttProperties.Security(key, "ETT", 5, 15, true),
                 new EttProperties.Storage(storage.toString()), new EttProperties.Mail("x@example.com", "#0a7476", "#0b2545"),
                 new EttProperties.Retention(180), new EttProperties.Scheduling(false));
     }

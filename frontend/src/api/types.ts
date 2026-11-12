@@ -93,7 +93,7 @@ export interface CreatedLogin {
 }
 
 export interface PasswordStepResult {
-  /** 'done' for the shared panel login, which has no authenticator step. */
+  /** 'done' for the shared panel login, which has no authenticator step, or when two-step verification is off. */
   nextStep: 'totp' | 'totp_setup' | 'done';
   otpauthUri: string | null;
   secret: string | null;
