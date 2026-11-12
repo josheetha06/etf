@@ -19,7 +19,8 @@ spring:
       pool:
         size: 4
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/ett}
+    # Either a full JDBC URL, or its parts (hosts such as Render hand those out separately).
+    url: ${DATABASE_URL:jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:ett}}
     username: ${DATABASE_USER:ett}
     password: ${DATABASE_PASSWORD:ett}
     hikari:

@@ -1,0 +1,47 @@
+# Render Blueprint: the API and its PostgreSQL database.
+# The web app is hosted on Vercel and forwards /api to this service (see frontend/vercel.json),
+# so the browser still sees a single origin.
+
+services:
+  - type: web
+    name: ett-hr-api
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /actuator/health/readiness
+    envVars:
+      - key: DATABASE_HOST
+        fromDatabase: { name: ett-db, property: host }
+      - key: DATABASE_PORT
+        fromDatabase: { name: ett-db, property: port }
+      - key: DATABASE_NAME
+        fromDatabase: { name: ett-db, property: database }
+      - key: DATABASE_USER
+        fromDatabase: { name: ett-db, property: user }
+      - key: DATABASE_PASSWORD
+        fromDatabase: { name: ett-db, property: password }
+      - key: DATABASE_POOL_SIZE
+        value: "5"
+      # 32 random bytes, base64, generated once by Render.
+      - key: ETT_ENCRYPTION_KEY
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: PORTAL_URL
+        value: https://etf-one-henna.vercel.app
+      - key: SPRING_PROFILES_ACTIVE
+        value: demo
+      - key: ETT_SAMPLE_REPORTS
+        value: "true"
+      # The free plan has 512 MB of memory.
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=70 -XX:+UseSerialGC -Xss512k -XX:+ExitOnOutOfMemoryError
+
+databases:
+  - name: ett-db
+    plan: free
+    region: singapore
+    databaseName: ett
+    user: ett
